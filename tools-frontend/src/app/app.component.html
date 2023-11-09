@@ -1,0 +1,52 @@
+
+<div class="container p-4">
+  <div class="row">
+    <h1 class="mb-5" style="text-align: center;">
+      Awesome Tools
+    </h1>
+  </div>
+  <div class="row">
+    <div class="col">
+      <div class="card mx-4 p-4 w-100">
+        <div class="d-flex flex-column">
+          <h5>Encrypt</h5>
+          <!-- <p class="card-text">With supporting text below as a natural lead-in to additional content.</p> -->
+          <input class="my-3 form-control" type="text" [formControl]="encryptInput">
+          <button
+            class="btn btn-primary"
+            (click)="encrypt()"
+          >Encrypt</button>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card mx-4 p-4 w-100">
+        <div class="d-flex flex-column">
+          <h5>Decrypt</h5>
+          <!-- <p class="card-text">With supporting text below as a natural lead-in to additional content.</p> -->
+          <input class="my-3 form-control" type="text" [formControl]="decryptInput">
+          <button
+            class="btn btn-primary"
+            (click)="decrypt()"
+          >Decrypt</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row mt-4">
+    <div class="col-6">
+      <div class="card mx-4 p-4 w-100">
+        <div class="d-flex flex-column">
+          <h5>One-way encrypt</h5>
+          <!-- <p class="card-text">With supporting text below as a natural lead-in to additional content.</p> -->
+          <input class="my-3 form-control" type="text" [formControl]="oneWayEncryptInput">
+          <input class="mb-4 form-control cursor-pointer" type="text" [formControl]="oneWayEncryptOutput">
+          <button
+            class="btn btn-primary"
+            (click)="oneWayEncrypt()"
+          >One-way encrypt</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
