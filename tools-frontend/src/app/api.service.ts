@@ -18,7 +18,7 @@ export class ApiService {
       map((response: AxiosResponse) => response.data.data),
       tap((value: any) => {
         if (typeof value === 'string') {
-          navigator.clipboard.writeText(value ?? '');
+          navigator.clipboard.writeText(value ?? '')
         }
       }),
       catchError((error) => {

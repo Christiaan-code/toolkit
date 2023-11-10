@@ -49,4 +49,24 @@
       </div>
     </div>
   </div>
+  <div class="row mt-4">
+    <div class="col-6">
+      <div class="card mx-4 p-4 w-100">
+        <div class="d-flex flex-column">
+          <h5>RSAID Generator</h5>
+          <input class="mt-2 form-control cursor-pointer" type="text" [formControl]="RSAIDOutput">
+          <div>
+            <input class="form-check-input me-2 mb-4" type="checkbox" value="" [formControl]="RSAIDValidAge" id="checkbox">
+            <label class="form-check-label" for="checkbox">
+              Age between 18 and 80
+            </label>
+          </div>
+          <button
+            class="btn btn-primary"
+            (click)="generateRSAID()"
+          >Generate</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
