@@ -1,11 +1,12 @@
 import * as crypto from 'crypto'
+import { environment } from './environment'
 
 export class CryptoHandler {
 
   public static encrypt(data: string): string {
     if (data) {
       const iv = crypto.randomBytes(16)
-      const mykey = crypto.createCipheriv('aes-256-cbc', Buffer.from(process.env.CRYPTO_PASSWORD), iv)
+      const mykey = crypto.createCipheriv('aes-256-cbc', this.getCryptoKey(), iv)
       const mystr = mykey.update(data)
       const encrypted = Buffer.concat([mystr, mykey.final()])
       const encryptedCombined = iv.toString('hex') + ':' + encrypted.toString('hex')
@@ -17,11 +18,9 @@ export class CryptoHandler {
   public static decrypt(data: string): string {
     if (data) {
       const textParts = data.split(':')
-      console.log('text: ', textParts)
       const iv = Buffer.from(textParts.shift(), 'hex')
-      console.log('iv: ', iv)
       const encryptedText = Buffer.from(textParts.join(':'), 'hex')
-      const decipher = crypto.createDecipheriv('aes-256-cbc', Buffer.from(process.env.CRYPTO_PASSWORD), iv)
+      const decipher = crypto.createDecipheriv('aes-256-cbc', this.getCryptoKey(), iv)
       const decrypted = decipher.update(encryptedText)
 
       const decryptedValue = Buffer.concat([decrypted, decipher.final()])
@@ -48,4 +47,10 @@ export class CryptoHandler {
     })
   }
 
+  private static getCryptoKey(): Buffer {
+    if (environment.environment === 'production')
+      return Buffer.from(process.env.PROD_CRYPTO_PASSWORD)
+    else
+      return Buffer.from(process.env.CRYPTO_PASSWORD)
+  }
 }

@@ -9,36 +9,25 @@ const port = 1000
 
 app.use(cors())
 
-app.get('/', (req, res) => {})
-
 app.use(bodyParser.json());
+
+app.get('/', (req, res) => res.json({ message: 'API is working' }))
 
 app.post('/decrypt', (req, res) => {
   const requestData: string = req.body.data
-  console.log(requestData)
-
   const decryptedValue = CryptoHandler.decrypt(requestData)
-
   res.json({ message: 'Received POST data', data: decryptedValue.toString() });
 });
 
 app.post('/encrypt', (req, res) => {
   const requestData: string = req.body.data
-  console.log(requestData)
-
   const decryptedValue = CryptoHandler.encrypt(requestData)
-
-  
   res.json({ message: 'Received POST data', data: decryptedValue.toString() });
 });
 
 app.post('/one-way-encrypt', (req, res) => {
   const requestData: string = req.body.data
-  console.log(requestData)
-
-  CryptoHandler.OneWayEncrypt(requestData).then((val) => {
-    res.json({ message: 'Received POST data', data: val.toString() });
-  })
+  CryptoHandler.OneWayEncrypt(requestData).then((val) => res.json({ message: 'Received POST data', data: val.toString() }))
 });
 
 
