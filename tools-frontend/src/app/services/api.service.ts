@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core'
 import axios, { AxiosResponse } from 'axios'
 import { EMPTY, Observable, catchError, from, map, tap } from 'rxjs'
-import { Route, backendUrl } from 'src/environment'
+import { backendUrl } from 'src/environment'
+import { Route } from 'src/models'
 
 @Injectable({
   providedIn: 'root',
@@ -17,8 +18,8 @@ export class ApiService {
       }),
       map((response: AxiosResponse) => response.data.data),
       tap((value: any) => {
-        if (typeof value === 'string') {
-          navigator.clipboard.writeText(value ?? '')
+        if (typeof value === 'string' && !!value) {
+          navigator.clipboard.writeText(value)
         }
       }),
       catchError((error) => {

@@ -1,5 +1,5 @@
 import { IEnvironmentObject } from "./models";
 
 export const environment: IEnvironmentObject = {
-  environment: 'production'
+  environment: 'staging'
 }

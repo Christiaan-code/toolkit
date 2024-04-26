@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core'
 import { FormControl } from '@angular/forms'
-import { ApiService } from './api.service'
+import { ApiService } from './services/api.service'
 import { tap, firstValueFrom } from 'rxjs'
 
 @Component({
@@ -9,19 +9,24 @@ import { tap, firstValueFrom } from 'rxjs'
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
+  decryptLoading: boolean = false
+  encryptLoading: boolean = false
+  oneWayEncryptLoading: boolean = false
 
   constructor(
     private apiService: ApiService,
   ) {}
 
+  decryptInput = new FormControl()
+  encryptInput = new FormControl()
+  oneWayEncryptInput = new FormControl()
+  oneWayEncryptOutput = new FormControl()
+  RSAIDOutput = new FormControl()
+  customAge = new FormControl(false)
+  customAgeInput = new FormControl()
+
   data: string = ''
   title = 'util-project'
-  decryptInput = new FormControl('')
-  encryptInput = new FormControl('')
-  oneWayEncryptInput = new FormControl('')
-  oneWayEncryptOutput = new FormControl('')
-  RSAIDOutput = new FormControl('')
-  RSAIDValidAge = new FormControl(true)
 
   ngOnInit(): void {
     this.oneWayEncryptOutput.disable()
@@ -29,6 +34,9 @@ export class AppComponent implements OnInit {
   }
 
   async decrypt() {
+    this.decryptLoading = true
+    await this.initControlFromClipboard(this.decryptInput)
+
     const postData = {
       data: this.decryptInput.getRawValue()
     }
@@ -38,7 +46,10 @@ export class AppComponent implements OnInit {
     ))
   }
 
-  encrypt() {
+  async encrypt() {
+    this.encryptLoading = true
+    await this.initControlFromClipboard(this.encryptInput)
+
     const postData = {
       data: this.encryptInput.getRawValue()
     }
@@ -48,7 +59,10 @@ export class AppComponent implements OnInit {
     ))
   }
 
-  oneWayEncrypt() {
+  async oneWayEncrypt() {
+    this.oneWayEncryptLoading = true
+    await this.initControlFromClipboard(this.oneWayEncryptInput)
+
     const postData = {
       data: this.oneWayEncryptInput.getRawValue()
     }
@@ -60,10 +74,10 @@ export class AppComponent implements OnInit {
 
   generateRSAID() {
     let age: number
-    if (this.RSAIDValidAge.getRawValue()){
+    if (!this.customAge.getRawValue()){
       age = Math.floor(Math.random() * 63) + 18
     } else {
-      age = Math.floor(Math.random() * 100)
+      age = this.customAgeInput.getRawValue()
     }
     const year: number = new Date().getFullYear() - age
     const month: number = Math.floor(Math.random() * 12) + 1
@@ -98,5 +112,12 @@ export class AppComponent implements OnInit {
 
     const result = 10 - (sum % 10)
     return result === 10 ? 0 : result
+  }
+
+  private async initControlFromClipboard(control: FormControl<any>): Promise<void> {
+    const clipboardData = await navigator.clipboard.readText()
+    if (!control.getRawValue()) {
+      control.setValue(clipboardData)
+    }
   }
 }

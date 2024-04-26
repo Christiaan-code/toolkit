@@ -14,20 +14,33 @@ app.use(bodyParser.json());
 app.get('/', (req, res) => res.json({ message: 'API is working' }))
 
 app.post('/decrypt', (req, res) => {
-  const requestData: string = req.body.data
-  const decryptedValue = CryptoHandler.decrypt(requestData)
-  res.json({ message: 'Received POST data', data: decryptedValue.toString() });
+  try{
+    const requestData: string = req.body.data
+    const decryptedValue = CryptoHandler.decrypt(requestData)
+    res.json({ message: 'Received POST data', data: decryptedValue.toString() });
+  } catch(error) {
+    console.log('error: ', error.message)
+    res.status(500).json({ error: error.message })
+  }
 });
 
 app.post('/encrypt', (req, res) => {
-  const requestData: string = req.body.data
-  const decryptedValue = CryptoHandler.encrypt(requestData)
-  res.json({ message: 'Received POST data', data: decryptedValue.toString() });
+  try{
+    const requestData: string = req.body.data
+    const decryptedValue = CryptoHandler.encrypt(requestData)
+    res.json({ message: 'Received POST data', data: decryptedValue.toString() });
+  } catch(error) {
+    res.status(500).json({ error: error.message })
+  }
 });
 
 app.post('/one-way-encrypt', (req, res) => {
-  const requestData: string = req.body.data
-  CryptoHandler.OneWayEncrypt(requestData).then((val) => res.json({ message: 'Received POST data', data: val.toString() }))
+  try{
+    const requestData: string = req.body.data
+    CryptoHandler.OneWayEncrypt(requestData).then((val) => res.json({ message: 'Received POST data', data: val.toString() }))
+  } catch(error) {
+    res.status(500).json({ error: error.message })
+  }
 });
 
 
